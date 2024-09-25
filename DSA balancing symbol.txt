@@ -1,0 +1,102 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h> // Correct header for string functions
+struct stack {
+ char *s;
+ int size;
+ int tos;
+} st;
+int IsEmpty() {
+ return (st.tos == -1);
+}
+int IsFull() {
+ return (st.tos == st.size - 1);
+}
+char pop() {
+ char x = '\0'; // Initialize x to avoid returning uninitialized values
+ if (!IsEmpty()) {
+ x = st.s[st.tos];
+ st.tos--;
+ } else {
+ printf("Stack is empty\n");
+ }
+ return x;
+}
+char peek() {
+ char x = '\0'; // Initialize x to avoid returning uninitialized values
+ if (!IsEmpty()) {
+ x = st.s[st.tos];
+ printf("Top element: %c\n", x);
+ } else {
+ printf("Stack is empty\n");
+ }
+ return x;
+}
+void push(char element) {
+ if (!IsFull()) {
+ st.tos++;
+ st.s[st.tos] = element;
+ } else {
+ printf("Stack is full\n");
+ }
+}
+void display() {
+ if (!IsEmpty()) {
+ for (int i = 0; i <= st.tos; i++) {
+ printf("%c ", st.s[i]); // Use %c to print characters
+ }
+ printf("\n");
+ } else {
+ printf("Stack is empty\n");
+ }
+}
+void balsym() {
+ int flag = 0; // Initialize flag
+ char ch;
+ for (int i = 0; st.s[i] != '\0'; i++) {
+ ch = st.s[i];
+ switch (ch) {
+ case '(':
+ case '[':
+case '{':
+ push(ch);
+ break;
+ case ')':
+ case ']':
+ case '}':
+ if ((ch == ']' && peek() == '[') ||
+ (ch == ')' && peek() == '(') ||
+ (ch == '}' && peek() == '{')) {
+ pop(); // Pop without passing an argument
+ } else {
+ flag = 1; // Set flag if symbols don't match
+ }
+ break;
+ default:
+ break;
+ }
+ if (flag == 1) {
+ break;
+ }
+ }
+ if (flag == 0 && IsEmpty()) {
+ printf("Balanced\n");
+ } else {
+ printf("Not balanced\n");
+ }
+}
+int main() {
+ st.tos = -1; // Initialize stack top to -1
+
+ printf("Enter the size of the stack: ");
+ scanf("%d", &st.size);
+ getchar(); // Consume the newline character after scanf
+ st.s = (char*) malloc(sizeof(char) * st.size);
+ printf("Enter an expression to check for balancing:\n");
+ fgets(st.s, st.size, stdin);
+ st.s[strcspn(st.s, "\n")] = '\0'; // Remove newline character from input
+ balsym(); // Call balsym to check if the symbols are balanced
+ free(st.s); // Free allocated memory
+ return 0;
+}
