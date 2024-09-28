@@ -1,0 +1,116 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct queue
+{
+    int size;
+    int front;
+    int rear;
+    int *s;
+} que;
+int underflow()
+{
+    if (que.front == -1 && que.rear == -1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+int overflow()
+{
+    if (que.rear == que.size - 1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+void enque(int a)
+{
+    if (!overflow())
+    {
+        if (que.front == -1)
+        {
+            que.front++;
+        }
+        que.rear++;
+        que.s[que.rear] = a;
+    }
+    else
+    {
+        printf("\nqueue is fulll :");
+    }
+}
+int deque()
+{
+    int x = -1;
+    if (!underflow())
+    {
+        x = que.s[que.front];
+        if (que.front == que.rear)
+        {
+            que.front = que.rear = -1;
+        }
+        else
+        {
+            que.front++;
+        }
+    }
+    else
+    {
+        printf("\nqueue is empty :");
+    }
+    return x;
+}
+void display()
+{
+    if (!underflow())
+    {
+        printf("\nqueue element is :");
+        for (int i = que.front; i <= que.rear; i++)
+        {
+            printf("%d ", que.s[i]);
+        }
+        printf("\n");
+    }
+    else
+    {
+        printf("queue is empty :");
+    }
+}
+int main()
+{
+    printf("\nthe bytes is allocated %ld", sizeof(que));
+    que.size = 0;
+    que.front = -1;
+    que.rear = -1;
+    printf("\nenter the queue size :");
+    scanf("%d", &que.size);
+    que.s = (int *)malloc(que.size * sizeof(int));
+    if (que.s == NULL)
+    {
+        printf("\nmemory is not allocated :");
+        return 1;
+    }
+    int e;
+    for (int i = 0; i < que.size; i++)
+    {
+        printf("\nenter the element :");
+        scanf("%d", &e);
+        enque(e);
+    }
+    printf("display function of queue\n");
+    display();
+    printf("\ndeque function of queue %d\n:",deque());
+    //deque();
+    printf("the deque element is %d\n", deque(que));
+    printf("\ndeque function of queue after inque :");
+    display();
+    free(que.s);
+    return 0;
+}
