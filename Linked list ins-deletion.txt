@@ -1,0 +1,182 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+    int data;
+    struct node *next;
+};
+struct node *head = NULL; // Initialize head to NULL
+// Insert a node at the beginning
+void insertbeg(int a)
+{
+    struct node *ptr = (struct node *)malloc(sizeof(struct node));
+    ptr->data = a;
+    ptr->next = head;
+    head = ptr;
+}
+// Insert a node at the end
+void insertend(int a)
+{
+    struct node *ptr = (struct node *)malloc(sizeof(struct node));
+    ptr->data = a;
+    ptr->next = NULL;
+
+    if (head == NULL)
+    {
+        head = ptr;
+    }
+    else
+    {
+        struct node *p = head;
+        while (p->next != NULL)
+        {
+            p = p->next;
+        }
+        p->next = ptr;
+    }
+}
+// Insert a node after a given node
+void insertaf(int a, int b)
+{
+    struct node *p;
+    p = head;
+    while (p != NULL && p->data != a)
+    {
+        p = p->next;
+    }
+    if (p != NULL)
+    {
+        struct node *ptr = (struct node *)malloc(sizeof(struct node));
+        ptr->data = b;
+        ptr->next = p->next;
+        p->next = ptr;
+    }
+    else
+    {
+        printf("Element %d not found\n", a);
+    }
+}
+// Insert a node before a given node
+void insertbf(int a, int b)
+{
+    struct node *ptr, *p;
+    p = head;
+    if (head != NULL)
+    {
+        if (head->data == a)
+        {
+            ptr = (struct node *)malloc(sizeof(struct node));
+            ptr->data = b;
+            ptr->next = head;
+            head = ptr;
+        }
+        else
+        {
+            while (p->next != NULL && p->next->data != a)
+            {
+                p = p->next;
+            }
+            if (p->next != NULL)
+            {
+                ptr = (struct node *)malloc(sizeof(struct node));
+                ptr->data = b;
+                ptr->next = p->next;
+                p->next = ptr;
+            }
+            else
+            {
+                printf("Element %d not found\n", a);
+            }
+        }
+    }
+}
+//   struct node * deletebeg(struct node *head)
+//   //struct Node * deleteFirst(struct Node * head)
+//  {
+//      struct Node *p = head;
+//     head = head->next;
+//     free(p);
+//     return head;
+//}
+int deletebeg()
+{
+    struct node *p;
+    int x = -1;
+    if (head != NULL)
+    {
+        p = head;
+        head = p->next;
+        x = p->data;
+        free(p);
+    }
+    else
+    {
+        printf("empty");
+    }
+    return x;
+}
+struct node *deleteend(struct node *head)
+{
+    struct node *p;
+    p = head;
+    struct node *q;
+    q = head->next;
+    while (q->next != NULL)
+    {
+        p = p->next;
+        q = q->next;
+    }
+    p->next = NULL;
+    free(q);
+    return head;
+}
+// struct node * deletespec(struct node * head, int a)
+// {
+//     struct node *p = head;
+//     struct node *q = head->next;
+//     while(q->data!=a && q->next!= NULL)
+//     {
+//         p = p->next;
+//         q = q->next;
+//     }
+
+//     if(q->data == a)
+//     {
+//         p->next = q->next;
+//         free(q);
+//     }
+//     return head;
+//}
+// Display the linked list
+void display()
+{
+    struct node *p = head;
+    if (p == NULL)
+    {
+        printf("List is empty\n");
+    }
+    while (p != NULL)
+    {
+        printf("\nELEMENTS ARE : %d", p->data);
+        p = p->next;
+    }
+    printf("\n");
+}
+int main()
+{
+    insertbeg(40);
+    insertbeg(50);
+    insertbeg(60);
+    insertaf(60, 55);
+    display();
+    insertend(70);
+    insertend(80);
+    insertend(90);
+    deletebeg();
+    // head=deletebeg(head);
+    insertbf(80, 75);
+    // head = deletespec(head, 40);
+    head = deleteend(head);
+    display();
+    return 0;
+}
