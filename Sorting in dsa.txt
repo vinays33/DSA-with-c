@@ -1,0 +1,116 @@
+#include <stdio.h>
+
+// Selection Sort
+void selectionSort(int arr[], int n)
+{
+    // Outer loop to move the boundary of the unsorted portion
+    for (int i = 0; i < n - 1; i++)
+    {
+        // Assume the current index as the minimum element's index
+        int minindex = i;
+
+        // Inner loop to find the minimum element in the unsorted portion
+        for (int j = i + 1; j < n; j++)
+        {
+            // If a smaller element is found, update the minimum index
+            if (arr[j] < arr[minindex])
+            {
+                minindex = j;
+            }
+        }
+
+        // Swap the found minimum element with the first unsorted element
+        int temp = arr[i];
+        arr[i] = arr[minindex];
+        arr[minindex] = temp;
+    }
+}
+
+// Bubble Sort
+void bubblesort(int arr[], int n)
+{
+    int temp;
+    int flag;  // To check if swapping occurred
+
+    // Outer loop runs through the entire array (n-1 passes)
+    for (int i = 0; i < n - 1; i++)
+    {
+        flag = 0;  // Reset the flag at the beginning of each iteration
+
+        // Inner loop compares adjacent elements and swaps if needed
+        for (int j = 0; j < n - 1 - i; j++)  // Reduce comparisons with each pass (-i)
+        {
+            if (arr[j] > arr[j + 1])  // If current element is larger than the next, swap
+            {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                flag = 1;  // Set the flag to indicate a swap occurred
+            }
+        }
+
+        // If no elements were swapped during the inner loop, the array is sorted
+        if (flag == 0)
+            break;  // Exit the loop early if no swapping happened
+    }
+}
+
+// Insertion Sort
+void insertionsort(int arr[], int n)
+{
+    // Outer loop goes through each element starting from the second element
+    for (int i = 1; i < n; i++)
+    {
+        int key = arr[i];  // The current element to be inserted
+        int j = i - 1;
+
+        // Inner loop moves elements that are greater than 'key' one position ahead
+        while (j >= 0 && arr[j] > key)
+        {
+            arr[j + 1] = arr[j];  // Shift the element to the right
+            j--;  // Move to the previous element
+        }
+        // Insert 'key' in the correct position in the sorted portion
+        arr[j + 1] = key;
+    }
+}
+
+// Function to print the array
+void printArray(int arr[], int n)
+{
+    // Loop through the array to print each element
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+int main()
+{
+    // Define the array to be sorted
+    int arr[] = {64, 25, 12, 22, 11, 23, 45, 7, 89, 56, 4, 22, 46};
+    int n = sizeof(arr) / sizeof(arr[0]);  // Calculate the number of elements in the array
+
+    printf("Original array: ");
+    printArray(arr, n);  // Print the original array
+
+    // Selection Sort
+    selectionSort(arr, n);  // Sort the array using Selection Sort
+    printf("Array sorted by Selection Sort: ");
+    printArray(arr, n);  // Print the sorted array
+
+    // Reset the array for Bubble Sort
+    int arr2[] = {64, 25, 12, 22, 11, 23, 45, 7, 89, 56, 4, 22, 46};
+    bubblesort(arr2, n);  // Sort the array using Bubble Sort
+    printf("Array sorted by Bubble Sort: ");
+    printArray(arr2, n);  // Print the sorted array
+
+    // Reset the array for Insertion Sort
+    int arr3[] = {64, 25, 12, 22, 11, 23, 45, 7, 89, 56, 4, 22, 46};
+    insertionsort(arr3, n);  // Sort the array using Insertion Sort
+    printf("Array sorted by Insertion Sort: ");
+    printArray(arr3, n);  // Print the sorted array
+
+    return 0;
+}
