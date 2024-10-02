@@ -1,0 +1,92 @@
+#include <stdio.h>
+
+// Function to print the array
+void printArray(int *A, int n)
+{
+    for (int i = 0; i < n; i++) // Loop through each element of the array
+    {
+        printf("%d ", A[i]); // Print the current element
+    }
+    printf("\n"); // Print a newline after the entire array is printed
+}
+
+// Merge function to merge two sorted subarrays
+void merge(int A[], int low, int mid, int high)
+{
+    int i, j, k, B[100]; // Temporary array B[] to store merged elements
+    i = low;             // i starts at the beginning of the left subarray (low to mid)
+    j = mid + 1;         // j starts at the beginning of the right subarray (mid+1 to high)
+    k = low;             // k is the index for storing elements in temporary array B
+
+    // Merge the two subarrays by comparing their elements
+    while (i <= mid && j <= high) // Loop while both subarrays have elements to compare
+    {
+        if (A[i] < A[j]) // If the element from the left subarray is smaller
+        {
+            B[k] = A[i]; // Copy element from left subarray to B
+            i++;         // Move to the next element in the left subarray
+        }
+        else // If the element from the right subarray is smaller
+        {
+            B[k] = A[j]; // Copy element from right subarray to B
+            j++;         // Move to the next element in the right subarray
+        }
+        k++; // Move to the next position in B to store the next smallest element
+    }
+
+    // If there are remaining elements in the left subarray, copy them to B
+    while (i <= mid) // Loop to copy remaining elements from left subarray
+    {
+        B[k] = A[i]; // Copy element from left subarray
+        i++;         // Move to the next element in the left subarray
+        k++;         // Move to the next position in B
+    }
+
+    // If there are remaining elements in the right subarray, copy them to B
+    while (j <= high) // Loop to copy remaining elements from right subarray
+    {
+        B[k] = A[j]; // Copy element from right subarray
+        j++;         // Move to the next element in the right subarray
+        k++;         // Move to the next position in B
+    }
+
+    // Copy the sorted elements from B back into the original array A
+    for (i = low; i <= high; i++) // Loop through the sorted portion of the array
+    {
+        A[i] = B[i]; // Copy element from B to A
+    }
+}
+
+// Merge sort function to recursively divide and sort the array
+void mergeSort(int A[], int low, int high)
+{
+    int mid;
+    if (low < high) // Base case: stop when the subarray has only one element
+    {
+        mid = (low + high) / 2; // Find the midpoint of the current array segment
+
+        // Recursively divide and sort the left and right subarrays
+        mergeSort(A, low, mid);      // Recursive call to sort the left half
+        mergeSort(A, mid + 1, high); // Recursive call to sort the right half
+
+        // Merge the two sorted halves
+        merge(A, low, mid, high); // Merge the two sorted halves back together
+    }
+}
+
+// Main function to test merge sort
+int main()
+{
+    int A[] = {9, 1, 4, 14, 19, 15, 6}; // Input array to be sorted
+    int n = 7;                          // Size of the array
+
+    printf("Original array: \n");
+    printArray(A, n); // Print the original array
+
+    mergeSort(A, 0, n - 1); // Call merge sort on the entire array
+
+    printf("Sorted array: \n");
+    printArray(A, n); // Print the sorted array
+
+    return 0;
+}
