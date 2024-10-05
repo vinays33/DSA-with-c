@@ -1,0 +1,206 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+  int data;
+  struct node *next;
+};
+struct node *head = NULL;
+void insertbeginning(int a)// function of beginning
+{
+  struct node *ptr;
+  ptr = (struct node *)malloc(sizeof(struct node));
+  ptr->data = a;
+  ptr->next = NULL;
+  ptr->next = head;
+  head = ptr;
+}
+void insertend(int a)//function of insertion at end
+{
+  struct node *ptr, *p;
+  ptr = (struct node *)malloc(sizeof(struct node));
+  ptr->data = a;
+  ptr->next = NULL;
+  if (head == NULL)
+  {
+    head = ptr;
+  } else {
+    p = head;
+    while (p->next != NULL) 
+    {
+      p = p->next;
+    }
+    p->next = ptr;
+  }
+}
+int insertafter(int a, int b) // function of insertion after
+{
+  struct node *ptr, *p;
+  ptr = (struct node *)malloc(sizeof(struct node));
+  ptr->data = b;
+  ptr->next = NULL;
+  if (head == NULL)
+  {
+    head = ptr;
+  } 
+  else
+  {
+    p = head;
+    while (p->data != a) 
+    {
+      p = p->next;
+    }
+    ptr->next = p->next;
+    p->next = ptr;
+  }
+}
+int insertbefore(int a, int b) //function of insertion before
+{
+  struct node *ptr, *p;
+  ptr = (struct node *)malloc(sizeof(struct node));
+  ptr->data = b;
+  ptr->next = p->next;
+  if (head == NULL)
+  {
+    head = ptr;
+
+  } 
+  else
+  {
+    p = head;
+    while (p->next->data != a) 
+    {
+      p = p->next;
+    }
+    ptr->next = p->next;
+    p->next = ptr;
+  }
+}
+int deletebeginning() //function of deletetion at beginning
+{
+  struct node *p;
+  if (head != NULL) 
+  {
+    p = head;
+    head = head->next;
+    free(p);
+  } 
+  else 
+  {
+    printf("list is empty");
+  }
+}
+int deleteend() //function of deletion at end
+{
+  struct node *p, *q;
+  if (head != NULL) 
+  {
+    p = head;
+    while (p->next != NULL) 
+    {
+      q = p;
+      p = p->next;
+    }
+    q->next = NULL;
+    free(p);
+  }
+}
+
+int deletespecific(int a)//function of deletion at specified position
+{
+  struct node *p, *q;
+  if (head != NULL) 
+  {
+    p = head;
+    while (p->data != a)
+      {
+      q = p;
+      p = p->next;
+    }
+    q->next = p->next;
+    free(p);
+  }
+}
+void travelforward() // function of travel forward
+{
+  struct node *p;
+  p = head;
+  while (p != NULL) 
+  {
+    printf("%d\n", p->data);
+    p = p->next;
+  }
+}
+void travelbackward()// function of travel backward
+{
+  if (head != NULL) 
+  {
+    foo(head);
+  } 
+  else
+  {
+    printf("list is empty");
+  }
+}
+int foo(struct node *p) 
+{
+  if (p->next != NULL) 
+  {
+    foo(p->next);
+  }
+  printf("%d  ", p->data);
+}
+void display()// function for displaying the elements of list
+{
+  struct node *p;
+  p = head;
+  if (p == NULL)
+  {
+    printf("empty");
+  }
+  while (p != NULL) 
+  {
+    printf("%d  ", p->data);
+    p = p->next;
+  }
+}
+int main() {
+  printf("\n Insertion of linked list : ");
+  insertbeginning(10);
+  insertbeginning(20);
+  insertbeginning(30);
+  insertbeginning(40);
+  insertbeginning(50);
+  insertbeginning(60);
+  display();
+  printf("\n");
+  printf("\n Insert at end of a node : ");
+  insertend(70);
+  insertend(80);
+  display();
+  printf("\n");
+  printf("\n Insert after a node : ");
+  insertafter(30, 35);
+  display();
+  printf("\n");
+  printf("\n Insert before a node : ");
+  insertbefore(40, 45);
+  display();
+  printf("\n");
+  printf("\n After deleted beginning node : ");
+  deletebeginning();
+  display();
+  printf("\n");
+  printf("\n After deletd end node : ");
+  deleteend();
+  display();
+  printf("\n");
+  printf("\n After deleted specific node : ");
+  deletespecific(45);
+  display();
+  printf("\n");
+  printf("\n Travelforward : ");
+  display();
+  printf("\n");
+  printf("\n Travelbackward : ");
+  travelbackward();
+}
