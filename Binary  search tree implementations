@@ -1,0 +1,119 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
+};
+// Function to insert a new value into the BST
+struct Node *insert(struct Node *root, int data)
+{
+    if (root == NULL)
+    {
+        struct Node *ptr = (struct Node *)malloc(sizeof(struct Node));
+        ptr->data = data;
+        ptr->left = NULL;
+        ptr->right = NULL;
+        return ptr;
+    }
+    if (data < root->data)
+    {
+        root->left = insert(root->left, data);
+    }
+    else if (data > root->data)
+    {
+        root->right = insert(root->right, data);
+    }
+
+    return root;
+}
+// In-order Traversal (left-root-right)
+void inorder(struct Node *root)
+{
+    if (root != NULL)
+    {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+// Post-order Traversal (left-right-root)
+void postorder(struct Node *root)
+{
+    if (root != NULL)
+    {
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ", root->data);
+    }
+}
+// Pre-order Traversal (root-left-right)
+void preorder(struct Node *root)
+{
+    if (root != NULL)
+    {
+        printf("%d ", root->data);
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+// Function to find the maximum value in the BST (rightmost node)
+int findmax(struct Node *root)
+{
+    while (root->right != NULL)
+    {
+        root = root->right;
+    }
+    return root->data;
+}
+// Function to find the minimum value in the BST (leftmost node)
+int findmin(struct Node *root)
+{
+    while (root->left != NULL)
+    {
+        root = root->left;
+    }
+    return root->data;
+}
+// Function to count the number of leaf nodes
+int Numberofleaf(struct Node *root)
+{
+    if (root == NULL)
+    {
+        return 0;
+    }
+    if (root->left == NULL && root->right == NULL)
+    {
+        return 1;
+    }
+    return Numberofleaf(root->left) + Numberofleaf(root->right);
+}
+int main()
+{
+    struct Node *root = NULL;
+
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 70);
+    insert(root, 60);
+    insert(root, 80);
+    printf("In-order traversal : ");
+    inorder(root);
+
+    printf("\n");
+    printf("Post-order traversal : ");
+    postorder(root);
+
+    printf("\n");
+    printf("Pre-order traversal : ");
+    preorder(root);
+
+    printf("\n");  
+    printf("Maximum number in the tree : %d\n", findmax(root));
+    printf("Minimum number in the tree : %d\n", findmin(root));
+    printf("Number of leafs in the tree : %d\n", Numberofleaf(root));
+    return 0;
+}
