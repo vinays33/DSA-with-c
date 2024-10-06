@@ -1,0 +1,301 @@
+// Double linked list functions implementations !
+#include <stdio.h>
+#include <stdlib.h>
+
+// Doubly Linked List Node Structure
+struct node
+{
+    int data;
+    struct node *prev; // Pointer to the previous node
+    struct node *next; // Pointer to the next node
+};
+
+struct node *head = NULL;
+
+// Function to insert a node at the beginning
+void insertbeginning(int a)
+{
+    struct node *ptr;
+    ptr = (struct node *)malloc(sizeof(struct node));
+    ptr->data = a;
+    ptr->prev = NULL;
+    ptr->next = head;
+
+    if (head != NULL)
+    {
+        head->prev = ptr;
+    }
+
+    head = ptr;
+}
+
+// Function to display the list
+void display()
+{
+    struct node *p = head;
+    while (p != NULL)
+    {
+        printf("%d ", p->data);
+        p = p->next;
+    }
+    printf("\n");
+}
+
+// Function to insert a node at the end
+void insertend(int a)
+{
+    struct node *ptr, *p;
+    ptr = (struct node *)malloc(sizeof(struct node));
+    ptr->data = a;
+    ptr->next = NULL;
+
+    if (head == NULL)
+    {
+        ptr->prev = NULL;
+        head = ptr;
+    }
+    else
+    {
+        p = head;
+        while (p->next != NULL)
+        {
+            p = p->next;
+        }
+        p->next = ptr;
+        ptr->prev = p;
+    }
+}
+
+// Function to insert a node after a given node
+void insertafter(int a, int b)
+{
+    struct node *ptr, *p;
+    p = head;
+
+    // Find node with data = a
+    while (p != NULL && p->data != a)
+
+    {
+        p = p->next;
+    }
+
+    if (p == NULL)
+    {
+        printf("Node not found\n");
+        return;
+    }
+
+    ptr = (struct node *)malloc(sizeof(struct node));
+    ptr->data = b;
+    ptr->next = p->next;
+    ptr->prev = p;
+
+    if (p->next != NULL)
+    {
+        p->next->prev = ptr;
+    }
+
+    p->next = ptr;
+}
+
+// Function to insert a node before a given node
+void insertbefore(int a, int b)
+{
+    struct node *ptr, *p;
+    p = head;
+
+    // Find node with data = a
+    while (p != NULL && p->data != a)
+    {
+        p = p->next;
+    }
+
+    if (p == NULL)
+    {
+        printf("Node not found\n");
+        return;
+    }
+
+    ptr = (struct node *)malloc(sizeof(struct node));
+    ptr->data = b;
+    ptr->next = p;
+    ptr->prev = p->prev;
+
+    if (p->prev != NULL)
+    {
+        p->prev->next = ptr;
+    }
+    else
+    {
+        head = ptr;
+    }
+
+    p->prev = ptr;
+}
+
+// Function to delete a node from the beginning
+void deletebeginning()
+{
+    struct node *p;
+    if (head != NULL)
+    {
+        p = head;
+        head = head->next;
+        if (head != NULL)
+        {
+            head->prev = NULL;
+        }
+        free(p);
+    }
+    else
+    {
+        printf("List is empty\n");
+    }
+}
+
+// Function to delete a node from the end
+void deleteend()
+{
+    struct node *p;
+    if (head != NULL)
+    {
+        p = head;
+        while (p->next != NULL)
+        {
+            p = p->next;
+        }
+
+        if (p->prev != NULL)
+        {
+            p->prev->next = NULL;
+        }
+        else
+        {
+            head = NULL;
+        }
+
+        free(p);
+    }
+    else
+    {
+        printf("List is empty\n");
+    }
+}
+
+// Function to delete a specific node
+void deletespecific(int a)
+{
+    struct node *p;
+    p = head;
+
+    // Find node with data = a
+    while (p != NULL && p->data != a)
+    {
+        p = p->next;
+    }
+
+    if (p == NULL)
+    {
+        printf("Node not found\n");
+        return;
+    }
+
+    if (p->prev != NULL)
+    {
+        p->prev->next = p->next;
+    }
+    else
+    {
+        head = p->next;
+    }
+
+    if (p->next != NULL)
+    {
+        p->next->prev = p->prev;
+    }
+
+    free(p);
+}
+
+// Function to traverse the list forward
+void travelforward()
+{
+    struct node *p = head;
+    while (p != NULL)
+    {
+        printf("%d ", p->data);
+        p = p->next;
+    }
+    printf("\n");
+}
+
+// Function to traverse the list backward
+void travelbackward()
+{
+    struct node *p = head;
+    if (p == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
+    // Go to the last node
+    while (p->next != NULL)
+    {
+        p = p->next;
+    }
+
+    // Traverse backwards
+    while (p != NULL)
+    {
+        printf("%d ", p->data);
+        p = p->prev;
+    }
+    printf("\n");
+}
+
+// Main function
+int main()
+{
+    printf("\nThe beginning of the list: ");
+    insertbeginning(50);
+    insertbeginning(40);
+    insertbeginning(30);
+    insertbeginning(20);
+    insertbeginning(10);
+
+    display();
+
+    printf("\nThe end function of the list: ");
+    insertend(60);
+    insertend(75);
+    display();
+
+    printf("\nInsert after function: ");
+    insertafter(60, 70);
+    display();
+
+    printf("\nInsert before function: ");
+    insertbefore(30, 25);
+    display();
+
+    printf("\nDelete beginning function: ");
+    deletebeginning();
+    display();
+
+    printf("\nDelete end function: ");
+    deleteend();
+    display();
+
+    printf("\nDelete specific function: ");
+    deletespecific(40);
+    display();
+
+    printf("\nTravel forward function: ");
+    travelforward();
+
+    printf("\nTravel backward function: ");
+    travelbackward();
+
+    return 0;
+}
